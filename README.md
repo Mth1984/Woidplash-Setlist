@@ -29,6 +29,10 @@ Alle Songdaten stehen im `SONGS`-Array in [`index.html`](index.html). Pro Song:
 
 `tune` akzeptiert `"E"`, `"D-Std"` oder `"Drop D"` — die Wechsel-Marker werden automatisch daraus erzeugt. Beim Ändern der App-Version die `CACHE`-Konstante in `sw.js` hochzählen (z.B. `-v2`), damit das iPad die neue Version lädt.
 
+## Mit Claude bearbeiten (auch vom Handy beim Gig)
+
+Im Repo-Root liegt eine [`CLAUDE.md`](CLAUDE.md) mit Datenschema, Gig-Workflow und Stolpersteinen. Gibst du einer Claude-Instanz (z.B. der Claude-App am Smartphone) GitHub-Zugriff auf dieses Repo, genügt eine Ansage wie „bei Killing das Tempo auf 90" — Claude ändert die Songdaten, zählt den Service-Worker-Cache hoch, committet und pusht. GitHub Pages deployt automatisch (~1 Min), danach die PWA am iPad einmal mit Netz neu laden.
+
 ## Stack
 
 Eine einzelne `index.html` (kein Build, keine Dependencies), System-Fonts, Vanilla JS. PWA über `manifest.webmanifest` + `sw.js`. Hosting via GitHub Pages.

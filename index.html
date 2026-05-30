@@ -87,6 +87,13 @@
 <div class="foot">Woidplash Setlist · offline-tauglich · „Zum Home-Bildschirm" für die Bühne · Split-View neben ui.io</div>
 
 <script>
+/* SONG-DATEN — volles Schema + Editier-Regeln: siehe CLAUDE.md im Repo-Root.
+   {s:Set(1/2), n:Nr, t:"Titel", a:"Interpret", key:"Tonart",
+    tune:"E"|"D-Std"|"Drop D", tx:"Tuning-Detail"(opt), bpm:"120",
+    segue:"..."(opt), sec:[["Abschnitt","Akkorde"],...], solo:"...", note:"..."(opt)}
+   'tune' steuert die Tuning-Wechsel-Marker automatisch.
+   WICHTIG: Nach jeder Aenderung hier die CACHE-Version in sw.js hochzaehlen,
+   sonst laedt das iPad die alte gecachte Version! */
 const SONGS=[
 {s:1,n:1,t:"Gimme All Your Lovin'",a:"ZZ Top",key:"C-Dur (Riff-Zentrum)",tune:"E",bpm:"120",sec:[["Intro / Strophe","F/C – Bb/C – C5"],["Refrain","F – Bb – C"],["Solo","C5 – Bb – F5 – G5"]],solo:"C-Moll-Pentatonik / C-Blues · Box 8. Bund (Dur/Moll mischen)"},
 {s:1,n:2,t:"It's a Long Way to the Top",a:"AC/DC",key:"A-Dur",tune:"E",bpm:"~140",sec:[["Intro / Strophe","A – D – G – A"],["Refrain","D – G – A"],["Break","Dudelsack"]],solo:"A-Moll-Pentatonik · Box 5. Bund",note:"Tonart unsicher (A live / Bb Studio)"},
