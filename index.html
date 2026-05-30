@@ -92,6 +92,7 @@
     tune:"E"|"D-Std"|"Drop D", tx:"Tuning-Detail"(opt), bpm:"120",
     segue:"..."(opt), sec:[["Abschnitt","Akkorde"],...], solo:"...", note:"..."(opt)}
    'tune' steuert die Tuning-Wechsel-Marker automatisch.
+   AKKORDE = GRIFF-NAMEN (wie gegriffen), NICHT klingend transponiert bei alt. Tuning.
    WICHTIG: Nach jeder Aenderung hier die CACHE-Version in sw.js hochzaehlen,
    sonst laedt das iPad die alte gecachte Version! */
 const SONGS=[
@@ -114,7 +115,7 @@ const SONGS=[
 {s:2,n:1,t:"Hush",a:"Gotthard",key:"E-Dur (Intro Em)",tune:"E",bpm:"~105",sec:[["Intro","Em – Cm9 – Em"],["na-na-na","C – G – D – A"],["Hook (hush hush)","E – A – G – F#"]],solo:"E-Moll-Pentatonik / E-Blues · 12. Bund (Hardrock-Dur/Moll-Mix über E)"},
 {s:2,n:2,t:"99 Luftballons",a:"Nena → Beatles",key:"E-Dur",tune:"E",bpm:"~96",segue:"⮕ Hey Jude (na-na-na-Outro)",sec:[["Strophe","E – F#m – A – H"],["Outro-Segue","E – D – A (Hey Jude)"]],solo:"99 L.: E-Dur-Pent 9. Bund · Hey-Jude-Outro: E-Dur-Pent / E-Mixolydisch hell, E-Moll-Pent für Blueslicks",note:"Segue direkt ins Hey-Jude-Outro (E–D–A), nur der „na na na\"-Teil. Mitsing-Melodie liegt in der E-Dur-Pentatonik — hohe e-Saite: na-na-na = 0·4·7 · na-na-na-na = 2·0·2·0 · hey Jude = 9·7  (Töne E–G#–B · F#–E · C#–B)"},
 {s:2,n:3,t:"Rebel Yell",a:"Billy Idol",key:"H-Moll",tune:"E",bpm:"~167",sec:[["Riff / Strophe","Bm – A – G – Em"],["Refrain","Bm – A – G"],["Solo","Steve Stevens"]],solo:"H-Moll-Pentatonik · 7. Bund · H-Äolisch"},
-{s:2,n:4,t:"Kickstart My Heart",a:"Mötley Crüe",key:"C / G-Moll (Riff G–F–C)",tune:"D-Std",tx:"alle Saiten Ganzton runter (DGCFAD)",bpm:"~178",sec:[["Riff","G – F – C (Whoa-Lick)"],["Refrain","G – F – C – Bb"]],solo:"Mick Mars spielt das Solo mit Talkbox (Signature) — live oft per Wah-Pedal ersetzt. Pentatonik-Licks über den G–F–C-Vamp"},
+{s:2,n:4,t:"Kickstart My Heart",a:"Mötley Crüe",key:"C (Griff-Lage, D-Standard)",tune:"D-Std",tx:"alle Saiten Ganzton runter (DGCFAD)",bpm:"~178",sec:[["Riff","G – F – C (Whoa-Lick)"],["Refrain","G – F – C – Bb"]],solo:"Mick Mars: Talkbox (Signature), live per Wah-Pedal. Solo-Lage A-Moll-Pentatonik 5. Bund — wie gegriffen (Akkorde stehen als Griff-Namen, nicht klingend transponiert)"},
 {s:2,n:5,t:"The Look",a:"Roxette",key:"A-Dur",tune:"E",bpm:"94",sec:[["Strophe","A (sprech-rhythmisch)"],["Refrain","A – G – D – E"]],solo:"A-Dur-Pentatonik / A-Mixolydisch · 5. Bund"},
 {s:2,n:6,t:"Shoot to Thrill",a:"AC/DC",key:"A-Dur",tune:"E",bpm:"~142",sec:[["Riff","A5"],["Refrain","D – A – G"],["Solo","—"]],solo:"A-Moll / Blues-Pentatonik 5. Bund + Dur-Terz (Angus-Mix)"},
 {s:2,n:7,t:"Simple Man",a:"Lynyrd Skynyrd",key:"C-Dur / A-Moll",tune:"E",bpm:"~120",sec:[["durchgehend","C – G – Am"],["Solo","über C–G–Am"]],solo:"A-Moll-Pentatonik 5. Bund = C-Dur-Pent relativ · Dur/Moll wechseln",note:"Original Eb / Capo 4"},

@@ -49,6 +49,10 @@ Im `SONGS`-Array in `index.html`. Schema pro Song:
 - **Song hinzufügen:** ein neues Objekt an der richtigen Stelle einfügen, `s`/`n` setzen.
 - Gültiges JS-Objekt halten: Kommas zwischen Feldern und Objekten, alle Strings in `"..."`.
 
+### Akkord-Konvention: Griff-Namen, nicht transponiert
+
+Akkorde immer so notieren, **wie sie gegriffen werden** — nicht wie sie durch das Tuning klingend heißen. Beispiel: in D-Standard (Ganzton runter) eine **A-Form** greifen → als `A` notieren, NICHT als `G` (der klingende Name). Mathias denkt beim Spielen in Griff-Formen; transponierte Klang-Namen verwirren. Gilt genauso für `key` (Griff-Lage angeben) und `solo` (Bund-Position wie gegriffen, z.B. „A-Moll-Pentatonik 5. Bund", auch wenn sie durch D-Standard tiefer klingt). Betrifft v.a. Kickstart My Heart (D-Standard). Bei Drop D (nur tiefe Saite) heißen die Powerchords ohnehin wie sie klingen.
+
 ## Tuning-Marker sind automatisch
 
 Die roten („Umstimmen") und amber („Zurück auf E-Standard") Wechsel-Marker zwischen den Songs rechnet die App selbst aus dem `tune`-Feld aus. Du setzt nur `tune` korrekt — die Marker erscheinen von allein. Nicht manuell einfügen.
