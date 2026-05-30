@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Woidplash">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>Woidplash Setlist</title>
+<style>
+  :root{
+    --bg:#0A0A0A; --fg:#F5F5F5; --accent:#BF353E; --muted:#8A8A8A;
+    --card:#161616; --line:#262626; --amber:#F7A734; --amberline:#FFD400;
+    --display:-apple-system,'SF Pro Display','Segoe UI',system-ui,Roboto,sans-serif;
+    --body:-apple-system,'SF Pro Text','Segoe UI',system-ui,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+  body{max-width:1024px;margin:0 auto;padding:0 0 60px;}
+
+  .topbar{position:sticky;top:0;z-index:10;background:rgba(10,10,10,.97);
+    border-bottom:1px solid var(--line);display:flex;gap:8px;padding:12px 16px;align-items:center;}
+  .tab{flex:1;text-align:center;padding:14px;border-radius:10px;background:var(--card);
+    color:var(--muted);font-weight:800;font-size:16px;letter-spacing:.04em;cursor:pointer;
+    text-transform:uppercase;border:1px solid var(--line);}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .backbtn{padding:14px 18px;border-radius:10px;background:var(--card);border:1px solid var(--line);
+    color:var(--fg);font-weight:800;font-size:16px;cursor:pointer;}
+  .topttl{flex:1;font-weight:800;font-size:17px;padding-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  /* Setliste */
+  .set-head{font-family:var(--display);font-size:42px;font-weight:900;letter-spacing:-.01em;padding:22px 16px 2px;text-transform:uppercase;}
+  .set-sub{color:var(--muted);padding:0 16px 14px;font-size:13px;letter-spacing:.05em;text-transform:uppercase;}
+  .song-row{display:flex;align-items:center;gap:14px;padding:15px 16px;border-bottom:1px solid var(--line);cursor:pointer;}
+  .song-row:active{background:var(--card);}
+  .num{font-family:var(--display);font-size:24px;font-weight:900;color:var(--muted);min-width:32px;text-align:right;}
+  .song-main{flex:1;min-width:0;}
+  .song-title{font-size:20px;font-weight:800;line-height:1.15;}
+  .song-artist{font-size:13px;color:var(--muted);margin-top:2px;}
+  .segue{color:var(--accent);font-weight:800;}
+  .badge{font-size:12px;font-weight:800;letter-spacing:.05em;padding:6px 10px;border-radius:6px;text-transform:uppercase;white-space:nowrap;}
+  .badge.std{background:#1d1d1d;color:var(--muted);border:1px solid var(--line);}
+  .badge.tune{background:var(--accent);color:#fff;}
+
+  /* Tuning-Marker: HIN (rot, dezent-fett) vs ZURÜCK (amber, laut) */
+  .switch{display:flex;align-items:center;gap:10px;padding:12px 16px;font-weight:800;letter-spacing:.03em;}
+  .switch.up{background:rgba(191,53,62,.16);color:#ff7077;font-size:14px;border-left:5px solid var(--accent);}
+  .switch.back{background:var(--amber);color:#0A0A0A;font-size:17px;padding:18px 16px;
+    border-top:3px solid var(--amberline);border-bottom:3px solid var(--amberline);text-transform:uppercase;}
+  .switch.back .ic{font-size:22px;}
+
+  /* Song-Karte */
+  .song-banner{padding:13px 16px;font-weight:800;font-size:15px;letter-spacing:.03em;display:flex;gap:9px;align-items:center;}
+  .song-banner.up{background:var(--accent);color:#fff;}
+  .song-banner.back{background:var(--amber);color:#0A0A0A;font-size:17px;text-transform:uppercase;border-bottom:3px solid var(--amberline);}
+  .song-wrap{padding:20px 16px;}
+  .title-xl{font-family:var(--display);font-size:42px;font-weight:900;line-height:1.0;letter-spacing:-.01em;text-transform:uppercase;}
+  .artist-xl{color:var(--muted);font-size:15px;margin-top:6px;}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 20px;}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-size:15px;font-weight:600;}
+  .chip .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:2px;}
+  .chip.hot{border-color:var(--accent);}.chip.hot .v{color:var(--accent);font-weight:800;}
+  .section{border-top:1px solid var(--line);padding:13px 0;display:flex;gap:16px;align-items:baseline;}
+  .sec-name{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;min-width:96px;font-weight:800;padding-top:5px;}
+  .chords{font-size:26px;font-weight:800;color:var(--accent);letter-spacing:.01em;line-height:1.25;}
+  .sec-note{font-size:14px;color:var(--fg);opacity:.82;line-height:1.4;margin-top:3px;}
+  .solo-box{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:15px;margin:20px 0;}
+  .solo-box .k{color:var(--accent);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;}
+  .solo-box .v{font-size:18px;font-weight:600;margin-top:6px;line-height:1.35;}
+  .notes{background:#141414;border-radius:10px;padding:13px 15px;font-size:14px;line-height:1.45;color:#d2d2d2;}
+  .lookahead{margin-top:20px;border-radius:10px;padding:13px 15px;font-weight:700;font-size:14px;}
+  .lookahead.warn{background:var(--amber);color:#0A0A0A;}
+  .lookahead.up{background:rgba(191,53,62,.18);color:#ff8a90;border:1px solid var(--accent);}
+  .lookahead.ok{background:#141414;color:var(--muted);}
+  .navrow{display:flex;justify-content:space-between;margin-top:14px;color:var(--muted);font-size:14px;font-weight:600;gap:10px;}
+  .navrow span{cursor:pointer;}.navrow .nx{color:var(--fg);text-align:right;}
+  .foot{text-align:center;color:#555;font-size:12px;padding:26px 16px 0;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="topbar" id="topbar"></div>
+<div id="app"></div>
+<div class="foot">Woidplash Setlist · offline-tauglich · „Zum Home-Bildschirm" für die Bühne · Split-View neben ui.io</div>
+
+<script>
+const SONGS=[
+{s:1,n:1,t:"Gimme All Your Lovin'",a:"ZZ Top",key:"C-Dur (Riff-Zentrum)",tune:"E",bpm:"120",sec:[["Intro / Strophe","F/C – Bb/C – C5"],["Refrain","F – Bb – C"],["Solo","C5 – Bb – F5 – G5"]],solo:"C-Moll-Pentatonik / C-Blues · Box 8. Bund (Dur/Moll mischen)"},
+{s:1,n:2,t:"It's a Long Way to the Top",a:"AC/DC",key:"A-Dur",tune:"E",bpm:"~140",sec:[["Intro / Strophe","A – D – G – A"],["Refrain","D – G – A"],["Break","Dudelsack"]],solo:"A-Moll-Pentatonik · Box 5. Bund",note:"Tonart unsicher (A live / Bb Studio)"},
+{s:1,n:3,t:"Bring Me Some Water",a:"Melissa Etheridge",key:"A-Dur",tune:"E",bpm:"~125",sec:[["Strophe","A – G – D"],["Refrain","D – G – A"],["Bridge","G – D – A"]],solo:"A-Dur / A-Moll-Pentatonik · 5. Bund · A-Mixolydisch"},
+{s:1,n:4,t:"Jumpin' Jack Flash",a:"The Rolling Stones",key:"H-Dur",tune:"E",bpm:"~133",sec:[["Riff","B – A – E"],["Refrain","B – E – A – D – C#5"]],solo:"H-Moll-Blues / H-Moll-Pentatonik · 7. Bund",note:"Original Open-Tuning; Cover Standard + Capo"},
+{s:1,n:5,t:"Run to You",a:"Bryan Adams",key:"F#-Moll",tune:"E",bpm:"125",sec:[["Strophe","F#m – D – A – E"],["Refrain","A – E – F#m / B"]],solo:"F#-Moll-Pentatonik · 14. Bund (od. 2.) · Refrain A-Dur-Pent 5. Bund"},
+{s:1,n:6,t:"Sweet Child o' Mine",a:"Guns N' Roses",key:"D-Dur (Bridge E-Moll)",tune:"E",tx:"Original Eb",bpm:"~125",sec:[["Intro","D-Lick-Riff"],["Strophe / Refrain","D – C – G – D"],["Bridge","Em – G – A"],["Outro-Solo","E-Moll"]],solo:"Outro über E-Moll-Bridge → E-Moll-Pentatonik · 12. Bund"},
+{s:1,n:7,t:"Zitti e Buoni",a:"Måneskin",key:"E-Moll",tune:"E",bpm:"103",sec:[["Strophe","Em – C – Bm"],["Refrain","Em – G – A"],["Bridge","Half-Time-Break"]],solo:"E-Moll-Pentatonik · 12. Bund · E-Äolisch"},
+{s:1,n:8,t:"Cuts Like a Knife",a:"Bryan Adams",key:"D-Dur",tune:"E",bpm:"97",sec:[["Strophe / Refrain","D – G – C"],["Bridge","Bm – A – G"]],solo:"D-Dur-Pentatonik 10. Bund / H-Moll-Pent 7. Bund (C = bVII-Touch)"},
+{s:1,n:9,t:"Are You Gonna Go My Way",a:"Lenny Kravitz",key:"E-Dur (bluesig)",tune:"E",bpm:"130",sec:[["Riff / Strophe","E (E7#9)"],["Refrain","E – G – A"]],solo:"E-Moll-Pentatonik / E-Blues · 12. Bund (Hendrix-Clash) · offen 0–3"},
+{s:1,n:10,t:"Know Your Enemy",a:"Rage Against the Machine",key:"F#-Moll",tune:"E",tx:"Original Drop D",bpm:"120",sec:[["Riff","F#5"],["Refrain","F#5 – A5 – C5 – B5"],["Breakdown","—"]],solo:"F#-Moll-Pentatonik · 14. Bund (mit b5-Bluenote)"},
+{s:1,n:11,t:"Use Somebody",a:"Kings of Leon",key:"C-Dur",tune:"E",bpm:"137",sec:[["Strophe","C – C/E – Fmaj7 – Am"],["Refrain","Am – C – Fmaj7"]],solo:"C-Dur-Pentatonik 8. Bund / A-Moll-Pent 5. Bund (Am-betont)"},
+{s:1,n:12,t:"Don't Stop Believin'",a:"Journey",key:"E-Dur",tune:"E",bpm:"118",sec:[["Strophe","E – B – C#m – A"],["Refrain (spät!)","E – B – A"]],solo:"E-Dur-Pentatonik 12. Bund / C#-Moll-Pent 9. Bund · E-Mixolydisch"},
+{s:1,n:13,t:"The Boys of Summer",a:"The Ataris",key:"Eb-Dur / C-Moll",tune:"E",tx:"klingt Eb",bpm:"~150",sec:[["Strophe","Cm – Ab – Eb – Bb"],["Refrain","Eb – Bb – Cm – Ab"]],solo:"C-Moll-Pentatonik · Box 8. Bund (= A-Moll-Form +3 Bünde)"},
+{s:1,n:14,t:"Fortunate Son",a:"The Dead Daisies",key:"G-Dur",tune:"E",bpm:"~142",sec:[["Strophe","G – C – G (Riff)"],["Refrain","C – G – D"],["Solo","über Strophe-Vamp"]],solo:"G-Dur / E-Moll-Pentatonik 3. Bund · G-Mixolydisch (b7=F)"},
+{s:1,n:15,t:"The Pretender",a:"Foo Fighters",key:"A-Moll",tune:"E",bpm:"~174",sec:[["Strophe","Am(add9)-Arpeggio"],["Refrain","F – C – Am"],["Breakdown / Solo","—"]],solo:"A-Moll-Pentatonik · Box 5. Bund · A-Äolisch"},
+
+{s:2,n:1,t:"Hush",a:"Gotthard",key:"E-Moll",tune:"E",bpm:"111",sec:[["Strophe","Em – C – G – D"],["Refrain (na-na-na)","Em – C – G – D"]],solo:"E-Moll-Pentatonik · 12. Bund · E-Äolisch"},
+{s:2,n:2,t:"99 Luftballons",a:"Nena → Beatles",key:"E-Dur",tune:"E",bpm:"~96",segue:"⮕ Hey Jude (na-na-na-Outro)",sec:[["Strophe","E – F#m – A – H"],["Outro-Segue","E – D – A (Hey Jude)"]],solo:"99 L.: E-Dur-Pent 9. Bund · Hey-Jude-Outro: E-Dur-Pent / E-Mixolydisch hell, E-Moll-Pent für Blueslicks",note:"Direkter Segue ins Hey-Jude-Outro, nur der „na na na\"-Teil"},
+{s:2,n:3,t:"Rebel Yell",a:"Billy Idol",key:"H-Moll",tune:"E",bpm:"~167",sec:[["Riff / Strophe","Bm – A – G – Em"],["Refrain","Bm – A – G"],["Solo","Steve Stevens"]],solo:"H-Moll-Pentatonik · 7. Bund · H-Äolisch"},
+{s:2,n:4,t:"Kickstart My Heart",a:"Mötley Crüe",key:"C-Dur",tune:"D-Std",tx:"alle Saiten Ganzton runter (DGCFAD)",bpm:"~178",sec:[["Riff","G – F – C (Whoa-Lick)"],["Refrain","G – F – C – Bb"]],solo:"A-Moll-Pentatonik 5. Bund (E-Denke); bei D-Standard alle Formen +2 Bünde greifen"},
+{s:2,n:5,t:"The Look",a:"Roxette",key:"A-Dur",tune:"E",bpm:"94",sec:[["Strophe","A (sprech-rhythmisch)"],["Refrain","A – G – D – E"]],solo:"A-Dur-Pentatonik / A-Mixolydisch · 5. Bund"},
+{s:2,n:6,t:"Shoot to Thrill",a:"AC/DC",key:"A-Dur",tune:"E",bpm:"~142",sec:[["Riff","A5"],["Refrain","D – A – G"],["Solo","—"]],solo:"A-Moll / Blues-Pentatonik 5. Bund + Dur-Terz (Angus-Mix)"},
+{s:2,n:7,t:"Simple Man",a:"Lynyrd Skynyrd",key:"C-Dur / A-Moll",tune:"E",bpm:"~120",sec:[["durchgehend","C – G – Am"],["Solo","über C–G–Am"]],solo:"A-Moll-Pentatonik 5. Bund = C-Dur-Pent relativ · Dur/Moll wechseln",note:"Original Eb / Capo 4"},
+{s:2,n:8,t:"Are You Gonna Be My Girl",a:"Jet",key:"E-Dur",tune:"E",bpm:"~104",sec:[["Riff","E5 (Stop-Start)"],["Refrain","A – C – D – E"]],solo:"E-Moll / Blues-Pentatonik · 12. Bund oder offen"},
+{s:2,n:9,t:"Baila (Sexy Thing)",a:"Zucchero",key:"G-Moll",tune:"E",bpm:"~120",sec:[["Strophe","Gm – F"],["Refrain","Gm – Eb – Bb – F"]],solo:"G-Moll-Pentatonik / G-Äolisch · 3. Bund (melodisch)"},
+{s:2,n:10,t:"Sex on Fire",a:"Kings of Leon",key:"E-Dur (rel. C#m)",tune:"E",bpm:"~153",sec:[["Strophe","E – C#m – A"],["Pre","A – B"],["Refrain","E – A – C#m – B"]],solo:"C#-Moll-Pentatonik Box 9. Bund + Dur-Terz G# · Intro-Riff 12.–14. Bund"},
+{s:2,n:11,t:"Rockin' in the Free World",a:"Neil Young",key:"E-Moll",tune:"E",bpm:"~130",sec:[["Intro / Strophe","Em – D – C"],["Refrain","E – B – A"]],solo:"E-Moll-Pentatonik 12. Bund / E-Dorisch · Dur-Refrain E-Dur-Pent"},
+{s:2,n:12,t:"Tage wie diese",a:"Die Toten Hosen",key:"D-Dur",tune:"E",bpm:"~97",sec:[["Strophe","D – G – A"],["Pre","Bm – G – D – A"],["Refrain","D – A – Bm – G"]],solo:"Kein echtes Solo (Singalong) · Fills H-Moll-Pent 7. Bund"},
+{s:2,n:13,t:"Zombie",a:"The Cranberries",key:"E-Moll",tune:"E",bpm:"~83",sec:[["durchgehend","Em – C – G – D"],["Lead","über dieselbe Folge"]],solo:"E-Moll-Pentatonik 12. Bund + b6 (C) · Ankerton C"},
+{s:2,n:14,t:"Whole Lotta Rosie",a:"AC/DC",key:"A (A-Blues)",tune:"E",bpm:"~160",sec:[["Stop-Riff","A … D – A"],["Refrain","A – D – G – A"]],solo:"A-Moll-Pentatonik 5. Bund + Dur-Terz C# (Dur/Moll-Mix)"},
+{s:2,n:15,t:"Killing in the Name",a:"Rage Against the Machine",key:"D-Moll",tune:"Drop D",tx:"tiefe Saite auf D",bpm:"~88",sec:[["Intro","D5 – Hauptriff"],["Strophe","D5 · Eb5 · F5"],["Refrain","D5 Stabs"],["Bridge","Aufbau (leise→laut)"],["Solo","Morello: Toggle + Wah"],["Outro","D5 ×16 – Eskalation"]],solo:"D-Moll-Pentatonik / D-Blues · ab 12. Bund · viel Wah + Pinch-Harmonics",note:"Set-Schluss – Outro langsam ausreizen, hartes Ende"}
+];
+
+const TL={"E":"E-Standard","D-Std":"D-Standard","Drop D":"Drop D"};
+const TLSHORT={"E":"E","D-Std":"D-Std","Drop D":"Drop D"};
+let curSet=1;
+
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function renderList(){
+  document.getElementById("topbar").innerHTML=
+    `<div class="tab ${curSet===1?"active":""}" onclick="setSet(1)">Set 1</div>`+
+    `<div class="tab ${curSet===2?"active":""}" onclick="setSet(2)">Set 2</div>`;
+  const set=SONGS.filter(s=>s.s===curSet);
+  let h=`<div class="set-head">Set ${curSet}</div><div class="set-sub">${set.length} Songs · Woidplash · tipp einen Song</div>`;
+  set.forEach((song,i)=>{
+    if(i>0 && song.tune!==set[i-1].tune){
+      if(song.tune==="E") h+=`<div class="switch back"><span class="ic">⚠️</span> Zurück auf E-Standard – nicht vergessen!</div>`;
+      else h+=`<div class="switch up">🎸 Umstimmen → ${TL[song.tune]} · Wechselgitarre</div>`;
+    }
+    const gi=SONGS.indexOf(song);
+    const badge=song.tune==="E"?`<div class="badge std">E</div>`:`<div class="badge tune">${TLSHORT[song.tune]}</div>`;
+    const seg=song.segue?` <span class="segue">${esc(song.segue)}</span>`:"";
+    h+=`<div class="song-row" onclick="openCard(${gi})"><div class="num">${song.n}</div>`+
+       `<div class="song-main"><div class="song-title">${esc(song.t)}${seg}</div>`+
+       `<div class="song-artist">${esc(song.a)}</div></div>${badge}</div>`;
+  });
+  document.getElementById("app").innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+function openCard(gi){
+  const s=SONGS[gi], prev=SONGS[gi-1], next=SONGS[gi+1];
+  document.getElementById("topbar").innerHTML=
+    `<div class="backbtn" onclick="renderList()">← Setliste</div><div class="topttl">${esc(s.t)}</div>`;
+  let h="";
+  if(prev && prev.s===s.s && prev.tune!==s.tune){
+    if(s.tune==="E") h+=`<div class="song-banner back"><span>⚠️</span> Zurück auf E-Standard stimmen!</div>`;
+    else h+=`<div class="song-banner up"><span>🎸</span> ${TL[s.tune]}${s.tx?" – "+esc(s.tx):""}</div>`;
+  } else if(s.tune!=="E"){
+    h+=`<div class="song-banner up"><span>🎸</span> ${TL[s.tune]}${s.tx?" – "+esc(s.tx):""}</div>`;
+  }
+  h+=`<div class="song-wrap"><div class="title-xl">${esc(s.t)}</div>`+
+     `<div class="artist-xl">${esc(s.a)} · Set ${s.s} · #${s.n}</div>`;
+  const tchip=s.tune==="E"?`<span class="v">E-Standard</span>`:`<span class="v">🎸 ${TL[s.tune]}</span>`;
+  h+=`<div class="meta"><div class="chip"><span class="k">Tonart</span><span class="v">${esc(s.key)}</span></div>`+
+     `<div class="chip ${s.tune!=="E"?"hot":""}"><span class="k">Tuning</span>${tchip}</div>`+
+     `<div class="chip"><span class="k">Tempo</span><span class="v">${esc(s.bpm)} BPM</span></div></div>`;
+  s.sec.forEach(x=>{
+    h+=`<div class="section"><div class="sec-name">${esc(x[0])}</div><div class="chords">${esc(x[1])}</div></div>`;
+  });
+  h+=`<div class="solo-box"><div class="k">🎸 Solo-Lage</div><div class="v">${esc(s.solo)}</div></div>`;
+  if(s.note) h+=`<div class="notes">${esc(s.note)}</div>`;
+  if(next && next.s===s.s){
+    if(next.tune!==s.tune){
+      if(next.tune==="E") h+=`<div class="lookahead warn">⚠️ Danach: ZURÜCK auf E-Standard (vor „${esc(next.t)}")</div>`;
+      else h+=`<div class="lookahead up">🎸 Danach umstimmen → ${TL[next.tune]} (vor „${esc(next.t)}")</div>`;
+    }
+  }
+  h+=`<div class="navrow">`+
+     (prev?`<span onclick="openCard(${gi-1})">◀ #${prev.n} ${esc(prev.t)}</span>`:`<span></span>`)+
+     (next?`<span class="nx" onclick="openCard(${gi+1})">#${next.n} ${esc(next.t)} ▶</span>`:`<span class="nx">Letzter Song ●</span>`)+
+     `</div></div>`;
+  document.getElementById("app").innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+function setSet(n){curSet=n;renderList();}
+function applyHash(){var h=location.hash;if(h.indexOf("#card-")===0){openCard(parseInt(h.slice(6)));return;}if(h==="#set2"){curSet=2;}renderList();}
+applyHash();
+
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+</body>
+</html>

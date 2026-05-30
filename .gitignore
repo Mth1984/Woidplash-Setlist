@@ -1,0 +1,9 @@
+# temporaere Render-/Screenshot-Artefakte
+shot_*.png
+warmup.png
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
