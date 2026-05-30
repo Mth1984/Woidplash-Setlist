@@ -1,5 +1,5 @@
 // Woidplash Setlist – Service Worker (Offline-Cache fuer die Buehne)
-const CACHE = 'woidplash-setlist-v8';
+const CACHE = 'woidplash-setlist-v9';
 const ASSETS = [
   './',
   './index.html',
