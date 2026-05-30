@@ -64,6 +64,16 @@
   .chip{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-size:15px;font-weight:600;}
   .chip .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:2px;}
   .chip.hot{border-color:var(--accent);}.chip.hot .v{color:var(--accent);font-weight:800;}
+  /* Tempo-LED: blinkt im BPM-Takt (CSS-Animation, Dauer = 60/BPM s). Tap stoppt/startet. */
+  .chip.tempo{cursor:pointer;user-select:none;-webkit-user-select:none;}
+  .led{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--accent);
+    margin-right:9px;vertical-align:-1px;animation:ledbeat var(--beat,.5s) infinite;}
+  .chip.tempo.beatoff .led{animation:none;opacity:.2;box-shadow:none;}
+  @keyframes ledbeat{
+    0%{opacity:1;transform:scale(1.2);box-shadow:0 0 13px var(--accent),0 0 5px #fff;}
+    11%{opacity:1;}
+    50%,100%{opacity:.16;transform:scale(.85);box-shadow:0 0 0 transparent;}
+  }
   .section{border-top:1px solid var(--line);padding:13px 0;display:flex;gap:16px;align-items:baseline;}
   .sec-name{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;min-width:96px;font-weight:800;padding-top:5px;}
   .chords{font-size:26px;font-weight:800;color:var(--accent);letter-spacing:.01em;line-height:1.25;}
@@ -135,6 +145,17 @@ let curSet=1;
 
 function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
+/* Tempo-Chip mit blinkender LED. BPM-String ("~140") -> Zahl -> Beat-Dauer (60/BPM s).
+   Tap auf den Chip toggelt das Blinken (Klasse beatoff). Ohne gueltige BPM: keine LED. */
+function tempoChip(s){
+  const bpm=parseInt(String(s.bpm).replace(/[^\d]/g,""),10);
+  if(!bpm) return `<div class="chip"><span class="k">Tempo</span><span class="v">${esc(s.bpm)} BPM</span></div>`;
+  const beat=(60/bpm).toFixed(3);
+  return `<div class="chip tempo" onclick="this.classList.toggle('beatoff')" title="Tap: Blinken an/aus">`+
+    `<span class="k">Tempo</span>`+
+    `<span class="v"><span class="led" style="--beat:${beat}s"></span>${esc(s.bpm)} BPM</span></div>`;
+}
+
 function renderList(){
   document.getElementById("topbar").innerHTML=
     `<div class="tab ${curSet===1?"active":""}" onclick="setSet(1)">Set 1</div>`+
@@ -173,7 +194,7 @@ function openCard(gi){
   const tchip=s.tune==="E"?`<span class="v">E-Standard</span>`:`<span class="v">🎸 ${TL[s.tune]}</span>`;
   h+=`<div class="meta"><div class="chip"><span class="k">Tonart</span><span class="v">${esc(s.key)}</span></div>`+
      `<div class="chip ${s.tune!=="E"?"hot":""}"><span class="k">Tuning</span>${tchip}</div>`+
-     `<div class="chip"><span class="k">Tempo</span><span class="v">${esc(s.bpm)} BPM</span></div></div>`;
+     tempoChip(s)+`</div>`;
   s.sec.forEach(x=>{
     h+=`<div class="section"><div class="sec-name">${esc(x[0])}</div><div class="chords">${esc(x[1])}</div></div>`;
   });
